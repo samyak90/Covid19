@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Covid-19</string>
+    <string name="world_yesterday">World (Yesterday)</string>
+    <string name="world_today">World (Current)</string>
+    <string name="india">India</string>
+    <string name="total_cases">Total Cases:</string>
+    <string name="total_deaths">Total Deaths:</string>
+    <string name="total_active">Active Cases:</string>
+    <string name="total_recovered">Total Recovered:</string>
+    <string name="new_cases">New Cases:</string>
+    <string name="new_deaths">New Deaths:</string>
+    <string name="active_cases">Active Cases</string>
+    <string name="country_state_name">Country:</string>
+</resources>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#c0c0c0"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <ImageView
+            android:id="@+id/image_view_flag"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="45"
+            android:padding="8dp"
+            android:src="@mipmap/ic_launcher" />
+
+<!--        <com.haipq.android.flagkit.FlagImageView-->
+<!--            android:id="@+id/flagView"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:padding="8dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="45" />-->
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="55"
+            android:orientation="vertical"
+            android:paddingLeft="10dp">
+
+            <TextView
+                android:id="@+id/country_state_name2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:autoSizeMaxTextSize="19sp"
+                android:autoSizeMinTextSize="15sp"
+                android:autoSizeTextType="uniform"
+                android:maxLines="1"
+                android:padding="6dp"
+                android:text="@string/country_state_name"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="22sp"
+                android:textStyle="italic|bold" />
+
+            <TextView
+                android:id="@+id/total_cases_item_left2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:paddingLeft="8dp"
+                android:text="@string/total_cases"
+                android:textColor="#000" />
+
+            <TextView
+                android:id="@+id/total_deaths_item_left2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:paddingLeft="8dp"
+                android:text="@string/total_deaths"
+                android:textColor="#F00" />
+
+            <TextView
+                android:id="@+id/total_recovered_item_left2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:paddingLeft="8dp"
+                android:text="@string/total_recovered"
+                android:textColor="#018786" />
+
+            <TextView
+                android:id="@+id/total_active_item_left2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:paddingLeft="8dp"
+                android:text="@string/total_active" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/lineChart1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp" />
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/lineChart2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp"
+        android:scrollbars="vertical" />
+
+</LinearLayout>
