@@ -18,7 +18,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     private List<ListItem> listItems;
     private Context context;
-    HashMap<String, String> hMap;
+    private HashMap<String, String> hMap;
 
     MyAdapter(List<ListItem> listItems, Context context, HashMap<String, String> aMap) {
         this.listItems = listItems;
@@ -65,25 +65,25 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         return listItems.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    static class ViewHolder extends RecyclerView.ViewHolder{
 
-        public LinearLayout parentLayout;
-        public TextView textViewCountryName;
-        public TextView textViewTotalCases;
-        public TextView textViewTotalDeath;
-        public TextView textViewTotalRecovered;
-        public TextView textViewTotalActive;
+        LinearLayout parentLayout;
+        TextView textViewCountryName;
+        TextView textViewTotalCases;
+        TextView textViewTotalDeath;
+        TextView textViewTotalRecovered;
+        TextView textViewTotalActive;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             // Get all the view from the xml file
             parentLayout = itemView.findViewById(R.id.parent_layout_list_item);
-            textViewCountryName = (TextView) itemView.findViewById(R.id.country_state_name);
-            textViewTotalCases = (TextView) itemView.findViewById(R.id.total_cases_item_left);
-            textViewTotalDeath = (TextView) itemView.findViewById(R.id.total_deaths_item_left);
-            textViewTotalRecovered = (TextView) itemView.findViewById(R.id.total_recovered_item_left);
-            textViewTotalActive = (TextView) itemView.findViewById(R.id.total_active_item_left);
+            textViewCountryName = itemView.findViewById(R.id.country_state_name);
+            textViewTotalCases = itemView.findViewById(R.id.total_cases_item_left);
+            textViewTotalDeath = itemView.findViewById(R.id.total_deaths_item_left);
+            textViewTotalRecovered = itemView.findViewById(R.id.total_recovered_item_left);
+            textViewTotalActive = itemView.findViewById(R.id.total_active_item_left);
         }
     }
 }

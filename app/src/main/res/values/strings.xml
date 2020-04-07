@@ -11,4 +11,10 @@
     <string name="new_deaths">New Deaths:</string>
     <string name="active_cases">Active Cases</string>
     <string name="country_state_name">Country:</string>
+    <string name="country_timeline_date">Date</string>
+    <string name="country_timeline_confirmed">Confirmed</string>
+    <string name="country_timeline_deaths">Deaths</string>
+    <string name="country_timeline_recovered">Recovered</string>
+    <string name="country_timeline_new_cases">New Cases</string>
+    <string name="country_timeline_new_deaths">New Deaths</string>
 </resources>
