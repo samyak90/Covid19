@@ -1,6 +1,7 @@
 package com.example.covid19;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -18,12 +19,24 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.blongho.country_data.World;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -127,7 +140,7 @@ public class CountryActivity extends AppCompatActivity {
         recyclerViewLinear.setHasFixedSize(true);
         recyclerViewLinear.setLayoutManager(new LinearLayoutManager(this));
         // Assign adapter to the data
-        setDataToChartAndRecyclerView();
+//        setDataToChartAndRecyclerView();
 
         // Populate data from URL
         loadRecyclerViewCountryTimelineData();
@@ -178,7 +191,6 @@ public class CountryActivity extends AppCompatActivity {
 
     }
 
-
     private String getFlagImageUrl(String countryName, HashMap<String, String> aMap) {
         // Get value from aMap and use it to get url
         if (aMap.containsKey(countryName)) {
@@ -204,8 +216,103 @@ public class CountryActivity extends AppCompatActivity {
     private void setDataToChartAndRecyclerView() {
         RecyclerView.Adapter adapter = new CountryTimelineAdapter(listItemsCountryTimeLine, getApplicationContext());
         recyclerViewLinear.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
         // Assign data to linecharts from listItemsCountryTimeLine
+        ArrayList<Entry> yValuesChart1 = new ArrayList<>();
+        ArrayList<Entry> yValuesChart2 = new ArrayList<>();
+        String[] xAxisValues = new String[(int)listItemsCountryTimeLine.size()];
+
+        CountryTimelineListItem aListItem;
+
+        // yValues Chart1 - Total Confirmed cases
+        for(int index = 0; index < listItemsCountryTimeLine.size(); index+=4){
+            aListItem = listItemsCountryTimeLine.get(index);
+            yValuesChart1.add(new Entry(index, Integer.parseInt(aListItem.getConfirmedCases())));
+        }
+
+        // yValues Chart2 - Total Deaths
+        for(int index = 0; index < listItemsCountryTimeLine.size(); index+=4){
+            aListItem = listItemsCountryTimeLine.get(index);
+            yValuesChart2.add(new Entry(index, Integer.parseInt(aListItem.getDeaths())));
+        }
+
+        // Get x-axis indices (dates) for both the charts
+        for(int index = 0; index < listItemsCountryTimeLine.size(); index++){
+            aListItem = listItemsCountryTimeLine.get(index);
+//            xAxisValues[index] = aListItem.getDate();
+            String date = aListItem.getDate();
+            try {
+                Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+                DateFormat dateFormat = new SimpleDateFormat("dd/M");
+                date = dateFormat.format(date1);
+            } catch (ParseException e) {
+                date = aListItem.getDate();
+                e.printStackTrace();
+            }
+            xAxisValues[index] = date;
+        }
+
+        //////// Create data for Chart 1 /////////////
+        LineDataSet setChart1 = new LineDataSet(yValuesChart1, "Total Confirmed Cases");
+        //setChart1.setFillAlpha(110);
+        setChart1.setColor(Color.YELLOW);
+        setChart1.setLineWidth(3f);
+        //setChart1.setDrawValues(false);
+        setChart1.setValueTextSize(4f);
+        //setChart1.setValueTextColor(Color.BLUE);
+
+        ArrayList<ILineDataSet> dataSets1 = new ArrayList<>();
+        dataSets1.add(setChart1);
+        LineData data1 = new LineData(dataSets1);
+        lineChart1.setData(data1);
+        lineChart1.getAxisRight().setEnabled(false);
+
+        // Hide description
+        Description desc1 = new Description();
+        desc1.setEnabled(false);
+        //desc.setText("Cases since 22nd Jan 2020");
+        lineChart1.setDescription(desc1);
+
+        XAxis xAxis1 = lineChart1.getXAxis();
+        xAxis1.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return xAxisValues[(int)value];
+            }
+        });
+
+
+
+        //////// Create data for Chart 2 /////////////
+        LineDataSet setChart2 = new LineDataSet(yValuesChart2, "Total Deaths");
+        //setChart2.setFillAlpha(110);
+        setChart2.setColor(Color.RED);
+        setChart2.setLineWidth(3f);
+        //setChart2.setDrawValues(false);
+        setChart2.setValueTextSize(4f);
+        //setChart2.setValueTextColor(Color.BLUE);
+
+        ArrayList<ILineDataSet> dataSets2 = new ArrayList<>();
+        dataSets2.add(setChart2);
+        LineData data2 = new LineData(dataSets2);
+        lineChart2.setData(data2);
+        lineChart2.getAxisRight().setEnabled(false);
+
+        // Hide description
+        Description desc2 = new Description();
+        desc2.setEnabled(false);
+        //desc.setText("Cases since 22nd Jan 2020");
+        lineChart2.setDescription(desc2);
+
+        XAxis xAxis2 = lineChart2.getXAxis();
+        xAxis2.setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return xAxisValues[(int)value];
+            }
+        });
+
 
 
 
