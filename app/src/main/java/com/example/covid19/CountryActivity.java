@@ -103,6 +103,14 @@ public class CountryActivity extends AppCompatActivity {
             imageViewFlag.setImageResource(World.getFlagOf("US"));
         else if(countryName.equals("Korea, South") && countryCode.equals(""))
             imageViewFlag.setImageResource(World.getFlagOf("KR"));
+        else if(countryName.equals("Congo (Brazzaville)") && countryCode.equals(""))
+            imageViewFlag.setImageResource(World.getFlagOf("CD"));
+        else if(countryName.equals("Saint Kitts and Nevis") && countryCode.equals(""))
+            imageViewFlag.setImageResource(World.getFlagOf("KN"));
+        else if(countryName.equals("Saint Vincent and the Grenadines") && countryCode.equals(""))
+            imageViewFlag.setImageResource(World.getFlagOf("VC"));
+        else if(countryName.equals("Sao Tome and Principe") && countryCode.equals(""))
+            imageViewFlag.setImageResource(World.getFlagOf("ST"));
         else
             imageViewFlag.setImageResource(World.getFlagOf(countryCode));
 
