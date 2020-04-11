@@ -13,15 +13,14 @@
 
         <TextView
             android:id="@+id/country_timeline_date_id"
-            android:layout_width="0dp"
+            android:layout_width="75dp"
             android:layout_height="wrap_content"
             android:text="@string/country_timeline_date"
             android:autoSizeMaxTextSize="14sp"
             android:autoSizeMinTextSize="8sp"
             android:autoSizeTextType="uniform"
             android:maxLines="1"
-            android:padding="5dp"
-            android:layout_weight="20"/>
+            android:padding="5dp"/>
 
         <View
             android:layout_width="1dp"
@@ -30,15 +29,14 @@
 
         <TextView
             android:id="@+id/country_timeline_confirmed_id"
-            android:layout_width="0dp"
+            android:layout_width="55dp"
             android:layout_height="wrap_content"
             android:text="@string/country_timeline_confirmed"
             android:autoSizeMaxTextSize="14sp"
             android:autoSizeMinTextSize="8sp"
             android:autoSizeTextType="uniform"
             android:maxLines="1"
-            android:padding="5dp"
-            android:layout_weight="16"/>
+            android:padding="5dp"/>
 
         <View
             android:layout_width="1dp"
@@ -47,15 +45,14 @@
 
         <TextView
             android:id="@+id/country_timeline_deaths_id"
-            android:layout_width="0dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:text="@string/country_timeline_deaths"
-            android:autoSizeMaxTextSize="12sp"
+            android:autoSizeMaxTextSize="14sp"
             android:autoSizeMinTextSize="8sp"
             android:autoSizeTextType="uniform"
             android:maxLines="1"
-            android:padding="5dp"
-            android:layout_weight="16"/>
+            android:padding="5dp"/>
 
         <View
             android:layout_width="1dp"
@@ -64,15 +61,14 @@
 
         <TextView
             android:id="@+id/country_timeline_recovered_id"
-            android:layout_width="0dp"
+            android:layout_width="55dp"
             android:layout_height="wrap_content"
             android:text="@string/country_timeline_recovered"
             android:autoSizeMaxTextSize="14sp"
             android:autoSizeMinTextSize="8sp"
             android:autoSizeTextType="uniform"
             android:maxLines="1"
-            android:padding="5dp"
-            android:layout_weight="16"/>
+            android:padding="5dp"/>
 
         <View
             android:layout_width="1dp"
@@ -81,15 +77,14 @@
 
         <TextView
             android:id="@+id/country_timeline_new_cases_id"
-            android:layout_width="0dp"
+            android:layout_width="55dp"
             android:layout_height="wrap_content"
             android:text="@string/country_timeline_new_cases"
             android:autoSizeMaxTextSize="14sp"
             android:autoSizeMinTextSize="8sp"
             android:autoSizeTextType="uniform"
             android:maxLines="1"
-            android:padding="5dp"
-            android:layout_weight="16"/>
+            android:padding="5dp"/>
 
         <View
             android:layout_width="1dp"
@@ -98,15 +93,14 @@
 
         <TextView
             android:id="@+id/country_timeline_new_deaths_id"
-            android:layout_width="0dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:text="@string/country_timeline_new_deaths"
             android:autoSizeMaxTextSize="14sp"
             android:autoSizeMinTextSize="8sp"
             android:autoSizeTextType="uniform"
             android:maxLines="1"
-            android:padding="5dp"
-            android:layout_weight="16"/>
+            android:padding="5dp"/>
 
     </LinearLayout>
 

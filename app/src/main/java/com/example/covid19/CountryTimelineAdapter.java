@@ -37,7 +37,7 @@ public class CountryTimelineAdapter extends RecyclerView.Adapter<CountryTimeline
         holder.countryTimelineDate.setText(listItem.getDate());
         holder.countryTimelineConfirmed.setText(listItem.getConfirmedCases());
         holder.countryTimelineDeaths.setText(listItem.getDeaths());
-        holder.countryTimelineDeaths.setText(listItem.getRecovered());
+        holder.countryTimelineRecovered.setText(listItem.getRecovered());
 
         if(position == 0) {
             // Initial day value for new cases and new deaths is assumed to be zero

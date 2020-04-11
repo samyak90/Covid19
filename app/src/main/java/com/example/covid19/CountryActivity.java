@@ -11,14 +11,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.blongho.country_data.World;
-import com.bumptech.glide.Glide;
 import com.github.mikephil.charting.charts.LineChart;
-import com.haipq.android.flagkit.FlagImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,7 +26,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 public class CountryActivity extends AppCompatActivity {
 
@@ -78,7 +76,6 @@ public class CountryActivity extends AppCompatActivity {
                                 String totalDeath, String totalRecovered, String totalActive, HashMap<String, String> hashMap) {
 
         Log.d(TAG, "setDataToViews: setting data to views");
-
 
         // Get ImageView and set image to the view
         //ImageView imageViewFlag = findViewById(R.id.image_view_flag);
@@ -175,6 +172,9 @@ public class CountryActivity extends AppCompatActivity {
                 error.printStackTrace();
             }
         });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
 
     }
 
