@@ -47,15 +47,18 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, CountryActivity.class);
-                intent.putExtra("countryName", listItem.getCountryName());
-                intent.putExtra("totalCases", listItem.getTotalCases());
-                intent.putExtra("totalDeath", listItem.getTotalDeath());
-                intent.putExtra("totalRecovered", listItem.getTotalRecovered());
-                intent.putExtra("totalActive", listItem.getTotalActive());
-                intent.putExtra("map", hMap);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(intent);
+                // Check if world data and then only launch second activity (< 40 is India data)
+                if(listItems.size() > 40) {
+                    Intent intent = new Intent(context, CountryActivity.class);
+                    intent.putExtra("countryName", listItem.getCountryName());
+                    intent.putExtra("totalCases", listItem.getTotalCases());
+                    intent.putExtra("totalDeath", listItem.getTotalDeath());
+                    intent.putExtra("totalRecovered", listItem.getTotalRecovered());
+                    intent.putExtra("totalActive", listItem.getTotalActive());
+                    intent.putExtra("map", hMap);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                }
             }
         });
     }

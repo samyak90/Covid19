@@ -9,7 +9,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class CountryTimelineAdapter extends RecyclerView.Adapter<CountryTimelineAdapter.ViewHolderCustom> {
 
@@ -34,7 +39,16 @@ public class CountryTimelineAdapter extends RecyclerView.Adapter<CountryTimeline
         final CountryTimelineListItem listItem = listItems.get(position);
 
         // Set values to each view
-        holder.countryTimelineDate.setText(listItem.getDate());
+        String date = listItem.getDate();
+        try {
+            Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+            DateFormat dateFormat = new SimpleDateFormat("dd MMM");
+            date = dateFormat.format(date1);
+        } catch (ParseException e) {
+            date = listItem.getDate();
+            e.printStackTrace();
+        }
+        holder.countryTimelineDate.setText(date);
         holder.countryTimelineConfirmed.setText(listItem.getConfirmedCases());
         holder.countryTimelineDeaths.setText(listItem.getDeaths());
         holder.countryTimelineRecovered.setText(listItem.getRecovered());
