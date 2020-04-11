@@ -101,6 +101,8 @@ public class CountryActivity extends AppCompatActivity {
         //int flag = -1;
         if(countryName.equals("US") && countryCode.equals(""))
             imageViewFlag.setImageResource(World.getFlagOf("US"));
+        else if(countryName.equals("Korea, South") && countryCode.equals(""))
+            imageViewFlag.setImageResource(World.getFlagOf("KR"));
         else
             imageViewFlag.setImageResource(World.getFlagOf(countryCode));
 
