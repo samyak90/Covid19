@@ -250,11 +250,11 @@ public class CountryActivity extends AppCompatActivity {
         // Get x-axis indices (dates) for both the charts
         for(int index = 0; index < listItemsCountryTimeLine.size(); index++){
             aListItem = listItemsCountryTimeLine.get(index);
-//            xAxisValues[index] = aListItem.getDate();
             String date = aListItem.getDate();
             try {
                 Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-                DateFormat dateFormat = new SimpleDateFormat("dd/M");
+                //DateFormat dateFormat = new SimpleDateFormat("dd/M");
+                DateFormat dateFormat = new SimpleDateFormat("dd MMM");
                 date = dateFormat.format(date1);
             } catch (ParseException e) {
                 date = aListItem.getDate();
@@ -264,12 +264,12 @@ public class CountryActivity extends AppCompatActivity {
         }
 
         //////// Create data for Chart 1 /////////////
-        LineDataSet setChart1 = new LineDataSet(yValuesChart1, "Total Confirmed Cases");
+        LineDataSet setChart1 = new LineDataSet(yValuesChart1, "Total Confirmed Cases (since 22nd Jan 2020)");
         //setChart1.setFillAlpha(110);
         setChart1.setColor(Color.YELLOW);
         setChart1.setLineWidth(3f);
         //setChart1.setDrawValues(false);
-        setChart1.setValueTextSize(4f);
+        setChart1.setValueTextSize(5f);
         //setChart1.setValueTextColor(Color.BLUE);
 
         ArrayList<ILineDataSet> dataSets1 = new ArrayList<>();
@@ -281,7 +281,7 @@ public class CountryActivity extends AppCompatActivity {
         // Hide description
         Description desc1 = new Description();
         desc1.setEnabled(false);
-        //desc.setText("Cases since 22nd Jan 2020");
+        desc1.setText("Cases since 22nd Jan");
         lineChart1.setDescription(desc1);
 
         XAxis xAxis1 = lineChart1.getXAxis();
@@ -292,15 +292,18 @@ public class CountryActivity extends AppCompatActivity {
             }
         });
 
+        // Refresh chart
+        lineChart1.notifyDataSetChanged();
+        lineChart1.invalidate();
 
 
         //////// Create data for Chart 2 /////////////
-        LineDataSet setChart2 = new LineDataSet(yValuesChart2, "Total Deaths");
+        LineDataSet setChart2 = new LineDataSet(yValuesChart2, "Total Deaths (since 22nd Jan 2020)");
         //setChart2.setFillAlpha(110);
         setChart2.setColor(Color.RED);
         setChart2.setLineWidth(3f);
         //setChart2.setDrawValues(false);
-        setChart2.setValueTextSize(4f);
+        setChart2.setValueTextSize(5f);
         //setChart2.setValueTextColor(Color.BLUE);
 
         ArrayList<ILineDataSet> dataSets2 = new ArrayList<>();
@@ -312,7 +315,7 @@ public class CountryActivity extends AppCompatActivity {
         // Hide description
         Description desc2 = new Description();
         desc2.setEnabled(false);
-        //desc.setText("Cases since 22nd Jan 2020");
+        desc2.setText("Deaths since 22nd Jan");
         lineChart2.setDescription(desc2);
 
         XAxis xAxis2 = lineChart2.getXAxis();
@@ -323,7 +326,9 @@ public class CountryActivity extends AppCompatActivity {
             }
         });
 
-
+        // Refresh chart
+        lineChart2.notifyDataSetChanged();
+        lineChart2.invalidate();
 
 
     }
