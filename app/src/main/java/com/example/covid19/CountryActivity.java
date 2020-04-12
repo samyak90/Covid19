@@ -222,6 +222,10 @@ public class CountryActivity extends AppCompatActivity {
                                 // Get the data for relevant country
                                 JSONObject jsonObject = new JSONObject(response);
                                 JSONArray array = jsonObject.getJSONArray("states_daily");
+                                int totalConfirmed = 0;
+                                int totalRecovered = 0;
+                                int totalDeaths = 0;
+
                                 // Assuming we got the country name and associated data
                                 for (int i = 0; i < array.length(); i+=3) {
                                     JSONObject stateDataConfirmedWithDate = array.getJSONObject(i);
@@ -240,9 +244,13 @@ public class CountryActivity extends AppCompatActivity {
                                         e.printStackTrace();
                                     }
 
-                                    String currConfirmed = stateDataConfirmedWithDate.getString(stateCode);
-                                    String currDeaths = stateDataDeathWithDate.getString(stateCode);
-                                    String currRecovered = stateDataRecoveredWithDate.getString(stateCode);
+                                    totalConfirmed += Integer.parseInt(stateDataConfirmedWithDate.getString(stateCode));
+                                    totalDeaths += Integer.parseInt(stateDataDeathWithDate.getString(stateCode));
+                                    totalRecovered += Integer.parseInt(stateDataRecoveredWithDate.getString(stateCode));
+
+                                    String currConfirmed = String.valueOf(totalConfirmed);
+                                    String currDeaths = String.valueOf(totalDeaths);
+                                    String currRecovered = String.valueOf(totalRecovered);
 
                                     // Assign values to list item
                                     CountryTimelineListItem item = new CountryTimelineListItem(currDate, currConfirmed, currDeaths, currRecovered);
