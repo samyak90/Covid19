@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class CountryActivity extends AppCompatActivity {
 
@@ -252,9 +253,10 @@ public class CountryActivity extends AppCompatActivity {
             aListItem = listItemsCountryTimeLine.get(index);
             String date = aListItem.getDate();
             try {
-                Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+                Date date1 = new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(date);
                 //DateFormat dateFormat = new SimpleDateFormat("dd/M");
-                DateFormat dateFormat = new SimpleDateFormat("dd MMM");
+                DateFormat dateFormat = new SimpleDateFormat("dd MMM", Locale.US);
+                assert date1 != null;
                 date = dateFormat.format(date1);
             } catch (ParseException e) {
                 date = aListItem.getDate();

@@ -41,8 +41,9 @@ public class CountryTimelineAdapter extends RecyclerView.Adapter<CountryTimeline
         // Set values to each view
         String date = listItem.getDate();
         try {
-            Date date1 = new SimpleDateFormat("yyyy-MM-dd").parse(date);
-            DateFormat dateFormat = new SimpleDateFormat("dd MMM");
+            Date date1 = new SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(date);
+            DateFormat dateFormat = new SimpleDateFormat("dd MMM", Locale.US);
+            assert date1 != null;
             date = dateFormat.format(date1);
         } catch (ParseException e) {
             date = listItem.getDate();
