@@ -3,6 +3,7 @@ package com.example.covid19;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,7 +25,6 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
@@ -45,11 +45,14 @@ public class CountryActivity extends AppCompatActivity {
 
     private static final String TAG = "CountryActivity";
     private static final String URL_DATA_WORLD_TIME_SERIES = "https://pomber.github.io/covid19/timeseries.json";
+    private static final String URL_DATA_INDIA_STATE_TIME_SERIES = "https://api.covid19india.org/states_daily.json";
     private List<CountryTimelineListItem> listItemsCountryTimeLine;
     private String countryName;
     RecyclerView recyclerViewLinear;
     LineChart lineChart1;
     LineChart lineChart2;
+    HashMap<String, String> hashMap;
+    HashMap<String, String> stateMap;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,15 +82,15 @@ public class CountryActivity extends AppCompatActivity {
             String totalDeath = intent.getStringExtra("totalDeath");
             String totalRecovered = intent.getStringExtra("totalRecovered");
             String totalActive = intent.getStringExtra("totalActive");
-            HashMap<String, String> hashMap = (HashMap<String, String>) intent.getSerializableExtra("map");
+            hashMap = (HashMap<String, String>) intent.getSerializableExtra("map");
+            stateMap = (HashMap<String, String>) intent.getSerializableExtra("mapState");
 
             // Set data to views
-            setDataToViews(countryName, totalCases, totalDeath, totalRecovered, totalActive, hashMap);
+            setDataToViews(totalCases, totalDeath, totalRecovered, totalActive);
         }
     }
 
-    private void setDataToViews(String countryName, String totalCases,
-                                String totalDeath, String totalRecovered, String totalActive, HashMap<String, String> hashMap) {
+    private void setDataToViews(String totalCases, String totalDeath, String totalRecovered, String totalActive) {
 
         Log.d(TAG, "setDataToViews: setting data to views");
 
@@ -99,21 +102,28 @@ public class CountryActivity extends AppCompatActivity {
         // Get ImageView and set image to the view
         ImageView imageViewFlag = findViewById(R.id.image_view_flag);
         String countryCode = getCountryCode(countryName, hashMap);
-        //int flag = -1;
-        if(countryName.equals("US") && countryCode.equals(""))
-            imageViewFlag.setImageResource(World.getFlagOf("US"));
-        else if(countryName.equals("Korea, South") && countryCode.equals(""))
-            imageViewFlag.setImageResource(World.getFlagOf("KR"));
-        else if(countryName.equals("Congo (Brazzaville)") && countryCode.equals(""))
-            imageViewFlag.setImageResource(World.getFlagOf("CD"));
-        else if(countryName.equals("Saint Kitts and Nevis") && countryCode.equals(""))
-            imageViewFlag.setImageResource(World.getFlagOf("KN"));
-        else if(countryName.equals("Saint Vincent and the Grenadines") && countryCode.equals(""))
-            imageViewFlag.setImageResource(World.getFlagOf("VC"));
-        else if(countryName.equals("Sao Tome and Principe") && countryCode.equals(""))
-            imageViewFlag.setImageResource(World.getFlagOf("ST"));
-        else
-            imageViewFlag.setImageResource(World.getFlagOf(countryCode));
+        String stateCode = getStateCode(countryName, stateMap);
+        if(!stateCode.equals("") && TextUtils.isEmpty(countryCode))
+            imageViewFlag.setImageResource(World.getFlagOf("IN"));
+        else {
+            //int flag = -1;
+            if (countryName.equals("US") && countryCode.equals(""))
+                imageViewFlag.setImageResource(World.getFlagOf("US"));
+            else if (countryName.equals("Korea, South") && countryCode.equals(""))
+                imageViewFlag.setImageResource(World.getFlagOf("KR"));
+            else if (countryName.equals("Congo (Brazzaville)") && countryCode.equals(""))
+                imageViewFlag.setImageResource(World.getFlagOf("CD"));
+            else if (countryName.equals("Saint Kitts and Nevis") && countryCode.equals(""))
+                imageViewFlag.setImageResource(World.getFlagOf("KN"));
+            else if (countryName.equals("Saint Vincent and the Grenadines") && countryCode.equals(""))
+                imageViewFlag.setImageResource(World.getFlagOf("VC"));
+            else if (countryName.equals("Sao Tome and Principe") && countryCode.equals(""))
+                imageViewFlag.setImageResource(World.getFlagOf("ST"));
+            else if (countryName.equals("Cote d'lvoire") && countryCode.equals(""))
+                imageViewFlag.setImageResource(World.getFlagOf("CI"));
+            else
+                imageViewFlag.setImageResource(World.getFlagOf(countryCode));
+        }
 
         //FlagImageView flagImageView = (FlagImageView) findViewById(R.id.flagView);
         //String countryCode = getCountryCode(countryName, hashMap);
@@ -150,8 +160,6 @@ public class CountryActivity extends AppCompatActivity {
         recyclerViewLinear = findViewById(R.id.recycler_view_2);
         recyclerViewLinear.setHasFixedSize(true);
         recyclerViewLinear.setLayoutManager(new LinearLayoutManager(this));
-        // Assign adapter to the data
-//        setDataToChartAndRecyclerView();
 
         // Populate data from URL
         loadRecyclerViewCountryTimelineData();
@@ -162,40 +170,99 @@ public class CountryActivity extends AppCompatActivity {
     // Load Country timeline data from URL for countryName
     private void loadRecyclerViewCountryTimelineData() {
 
-        StringRequest stringRequest = new StringRequest(StringRequest.Method.GET,
-                URL_DATA_WORLD_TIME_SERIES,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            // Get the data for relevant country
-                            JSONObject jsonObject = new JSONObject(response);
-                            JSONArray array = jsonObject.getJSONArray(countryName);
-                            // Assuming we got the country name and associated data
-                            for (int i = 0; i < array.length(); i++){
-                                JSONObject countryDataWithDate = array.getJSONObject(i);
-                                String currDate = countryDataWithDate.getString("date");
-                                String currConfirmed = countryDataWithDate.getString("confirmed");
-                                String currDeaths = countryDataWithDate.getString("deaths");
-                                String currRecovered = countryDataWithDate.getString("recovered");
-                                // Assign values to list item
-                                CountryTimelineListItem item = new CountryTimelineListItem(currDate, currConfirmed, currDeaths, currRecovered);
-                                listItemsCountryTimeLine.add(item);
+        String countryCode = getCountryCode(countryName, hashMap);
+        String stateCode = getStateCode(countryName, stateMap);
+        StringRequest stringRequest;
+
+        if(TextUtils.isEmpty(stateCode)) {
+            stringRequest = new StringRequest(StringRequest.Method.GET,
+                    URL_DATA_WORLD_TIME_SERIES,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                // Get the data for relevant country
+                                JSONObject jsonObject = new JSONObject(response);
+                                JSONArray array = jsonObject.getJSONArray(countryName);
+                                // Assuming we got the country name and associated data
+                                for (int i = 0; i < array.length(); i++) {
+                                    JSONObject countryDataWithDate = array.getJSONObject(i);
+                                    String currDate = countryDataWithDate.getString("date");
+                                    String currConfirmed = countryDataWithDate.getString("confirmed");
+                                    String currDeaths = countryDataWithDate.getString("deaths");
+                                    String currRecovered = countryDataWithDate.getString("recovered");
+                                    // Assign values to list item
+                                    CountryTimelineListItem item = new CountryTimelineListItem(currDate, currConfirmed, currDeaths, currRecovered);
+                                    listItemsCountryTimeLine.add(item);
+                                }
+
+                                // Update View for recycler view and line charts
+                                setDataToChartAndRecyclerView();
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-
-                            // Update View for recycler view and line charts
-                            setDataToChartAndRecyclerView();
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        });
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                }
+            });
+
+
+        } else {
+            // India Case (State timeline data)
+            stringRequest = new StringRequest(StringRequest.Method.GET,
+                    URL_DATA_INDIA_STATE_TIME_SERIES,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                // Get the data for relevant country
+                                JSONObject jsonObject = new JSONObject(response);
+                                JSONArray array = jsonObject.getJSONArray("states_daily");
+                                // Assuming we got the country name and associated data
+                                for (int i = 0; i < array.length(); i+=3) {
+                                    JSONObject stateDataConfirmedWithDate = array.getJSONObject(i);
+                                    JSONObject stateDataRecoveredWithDate = array.getJSONObject(i+1);
+                                    JSONObject stateDataDeathWithDate = array.getJSONObject(i+2);
+
+                                    String currDate = stateDataConfirmedWithDate.getString("date");
+                                    // Format date data correctly
+                                    try {
+                                        Date date1 = new SimpleDateFormat("dd-MMM-yy", Locale.US).parse(currDate);
+                                        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+                                        assert date1 != null;
+                                        currDate = dateFormat.format(date1);
+                                    } catch (ParseException e) {
+                                        currDate = stateDataConfirmedWithDate.getString("date");
+                                        e.printStackTrace();
+                                    }
+
+                                    String currConfirmed = stateDataConfirmedWithDate.getString(stateCode);
+                                    String currDeaths = stateDataDeathWithDate.getString(stateCode);
+                                    String currRecovered = stateDataRecoveredWithDate.getString(stateCode);
+
+                                    // Assign values to list item
+                                    CountryTimelineListItem item = new CountryTimelineListItem(currDate, currConfirmed, currDeaths, currRecovered);
+                                    listItemsCountryTimeLine.add(item);
+                                }
+
+                                // Update View for recycler view and line charts
+                                setDataToChartAndRecyclerView();
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                }
+            });
+        }
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
@@ -214,12 +281,22 @@ public class CountryActivity extends AppCompatActivity {
         return "";
     }
 
-    private String getCountryCode(String countryName, HashMap<String, String> aMap) {
+    private String getCountryCode(String aCountryName, HashMap<String, String> aMap) {
         // Get value from aMap and use it to get url
-        if (aMap.containsKey(countryName)) {
-            String countryCode = aMap.get(countryName);
+        if (aMap.containsKey(aCountryName)) {
+            String countryCode = aMap.get(aCountryName);
             assert countryCode != null;
             return countryCode;
+        }
+        return "";
+    }
+
+    private String getStateCode(String aStateName, HashMap<String, String> aMap) {
+        // Get value from aMap and use it to get url
+        if (aMap.containsKey(aStateName)) {
+            String stateCode = aMap.get(aStateName);
+            assert stateCode != null;
+            return stateCode;
         }
         return "";
     }

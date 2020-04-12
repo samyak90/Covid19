@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private List<ListItem> listItems;
     // HashMap for countryName and countryCode
     public HashMap<String, String> hmap;
+    public HashMap<String, String> stateMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,9 +93,9 @@ public class MainActivity extends AppCompatActivity {
         overallTotalRecovered.setText(totalRecoveredStr);
         overallTotalActive.setText(totalActiveStr);
 
-        // Create a HashMap
+        // Create a HashMap for world and India
         makeCountryNameCountryCodeMap();
-
+        makeIndiaAndStateCodeMap();
 
         // Create Data List
         listItems = new ArrayList<>();
@@ -226,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setAdapterAndUpdateView() {
-        RecyclerView.Adapter adapter = new MyAdapter(listItems, getApplicationContext(), hmap);
+        RecyclerView.Adapter adapter = new MyAdapter(listItems, getApplicationContext(), hmap, stateMap);
         recyclerView.setAdapter(adapter);
 
         // Update overall data
@@ -277,6 +278,34 @@ public class MainActivity extends AppCompatActivity {
                 hmap.put(jsonCountryName, jsonCountryCode);
                 }
             this.hmap = hmap;
+        } catch (IOException | JSONException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
+    // Create a HashMap for country name and code list
+    public void makeIndiaAndStateCodeMap() {
+        // Store key value pair for countries
+        String json = null;
+        /* This is how to declare HashMap */
+        HashMap<String, String> stateMap = new HashMap<String, String>();
+        try {
+            InputStream is = this.getResources().openRawResource(R.raw.indianstates);
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, StandardCharsets.UTF_8);
+            JSONObject jsonObject = new JSONObject(json);
+            JSONArray stateCodeStringArray = jsonObject.names();
+            assert stateCodeStringArray != null;
+            for (int i = 0; i < stateCodeStringArray.length(); i++) {
+                String jsonStateCode = (String)stateCodeStringArray.getString(i);
+                String jsonStateName = jsonObject.getString(jsonStateCode);
+                stateMap.put(jsonStateName, jsonStateCode.toLowerCase());
+            }
+            this.stateMap = stateMap;
         } catch (IOException | JSONException ex) {
             ex.printStackTrace();
         }

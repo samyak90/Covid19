@@ -19,11 +19,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private List<ListItem> listItems;
     private Context context;
     private HashMap<String, String> hMap;
+    private HashMap<String, String> stateMap;
 
-    MyAdapter(List<ListItem> listItems, Context context, HashMap<String, String> aMap) {
+    MyAdapter(List<ListItem> listItems, Context context, HashMap<String, String> aMap, HashMap<String, String> aMap2) {
         this.listItems = listItems;
         this.context = context;
         this.hMap = aMap;
+        this.stateMap = aMap2;
     }
 
     @NonNull
@@ -48,17 +50,18 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
                 // Check if world data and then only launch second activity (< 40 is India data)
-                if(listItems.size() > 40) {
-                    Intent intent = new Intent(context, CountryActivity.class);
-                    intent.putExtra("countryName", listItem.getCountryName());
-                    intent.putExtra("totalCases", listItem.getTotalCases());
-                    intent.putExtra("totalDeath", listItem.getTotalDeath());
-                    intent.putExtra("totalRecovered", listItem.getTotalRecovered());
-                    intent.putExtra("totalActive", listItem.getTotalActive());
-                    intent.putExtra("map", hMap);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(intent);
-                }
+//                if(listItems.size() > 40) {
+                Intent intent = new Intent(context, CountryActivity.class);
+                intent.putExtra("countryName", listItem.getCountryName());
+                intent.putExtra("totalCases", listItem.getTotalCases());
+                intent.putExtra("totalDeath", listItem.getTotalDeath());
+                intent.putExtra("totalRecovered", listItem.getTotalRecovered());
+                intent.putExtra("totalActive", listItem.getTotalActive());
+                intent.putExtra("map", hMap);
+                intent.putExtra("mapState", stateMap);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+//                }
             }
         });
     }

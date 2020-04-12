@@ -2,7 +2,7 @@ package com.example.covid19;
 
 import java.util.Date;
 
-public class CountryTimelineListItem {
+class CountryTimelineListItem {
 
 //    public Date date;
     private String date;
@@ -10,7 +10,7 @@ public class CountryTimelineListItem {
     private String deaths;
     private String recovered;
 
-    public CountryTimelineListItem(String date, String confirmedCases, String deaths, String recovered) {
+    CountryTimelineListItem(String date, String confirmedCases, String deaths, String recovered) {
         this.date = date;
         this.confirmedCases = confirmedCases;
         this.deaths = deaths;
