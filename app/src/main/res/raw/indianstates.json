@@ -4,8 +4,8 @@
 	"AR":"Arunachal Pradesh",
 	"AS":"Assam",
 	"BR":"Bihar",
-	"CG":"Chandigarh",
-	"CH":"Chhattisgarh",
+	"CH":"Chandigarh",
+	"CT":"Chhattisgarh",
 	"DN":"Dadra and Nagar Haveli",
 	"DD":"Daman and Diu",
 	"DL":"Delhi",
@@ -31,9 +31,9 @@
 	"RJ":"Rajasthan",
 	"SK":"Sikkim",
 	"TN":"Tamil Nadu",
-	"TS":"Telangana",
+	"TG":"Telangana",
 	"TR":"Tripura",
 	"UP":"Uttar Pradesh",
-	"UK":"Uttarakhand",
+	"UT":"Uttarakhand",
 	"WB":"West Bengal"
 }

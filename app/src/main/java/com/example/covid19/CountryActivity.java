@@ -244,9 +244,21 @@ public class CountryActivity extends AppCompatActivity {
                                         e.printStackTrace();
                                     }
 
-                                    totalConfirmed += Integer.parseInt(stateDataConfirmedWithDate.getString(stateCode));
-                                    totalDeaths += Integer.parseInt(stateDataDeathWithDate.getString(stateCode));
-                                    totalRecovered += Integer.parseInt(stateDataRecoveredWithDate.getString(stateCode));
+                                    try {
+                                        totalConfirmed += Integer.parseInt(stateDataConfirmedWithDate.getString(stateCode));
+                                    } catch (NumberFormatException nfe) {
+                                        nfe.printStackTrace();
+                                    }
+                                    try {
+                                        totalDeaths += Integer.parseInt(stateDataDeathWithDate.getString(stateCode));
+                                    } catch (NumberFormatException nfe) {
+                                        nfe.printStackTrace();
+                                    }
+                                    try {
+                                        totalRecovered += Integer.parseInt(stateDataRecoveredWithDate.getString(stateCode));
+                                    } catch (NumberFormatException nfe) {
+                                        nfe.printStackTrace();
+                                    }
 
                                     String currConfirmed = String.valueOf(totalConfirmed);
                                     String currDeaths = String.valueOf(totalDeaths);
