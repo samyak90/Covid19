@@ -326,27 +326,39 @@ public class CountryActivity extends AppCompatActivity {
         recyclerViewLinear.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
-        // Assign data to linecharts from listItemsCountryTimeLine
+        // Assign data to line charts from listItemsCountryTimeLine
         ArrayList<Entry> yValuesChart1 = new ArrayList<>();
         ArrayList<Entry> yValuesChart2 = new ArrayList<>();
-        String[] xAxisValues = new String[(int)listItemsCountryTimeLine.size()];
+        String[] xAxisValues = new String[listItemsCountryTimeLine.size()];
 
         CountryTimelineListItem aListItem;
+        int timelineDataLength = listItemsCountryTimeLine.size();
+        int dataDivider = 4;
 
         // yValues Chart1 - Total Confirmed cases
-        for(int index = 0; index < listItemsCountryTimeLine.size(); index+=4){
+        for(int index = 0; index < timelineDataLength; index+=dataDivider){
             aListItem = listItemsCountryTimeLine.get(index);
             yValuesChart1.add(new Entry(index, Integer.parseInt(aListItem.getConfirmedCases())));
         }
+        // Add the last item if not already added
+        if ((timelineDataLength-1) % dataDivider != 0){
+            aListItem = listItemsCountryTimeLine.get(timelineDataLength - 1);
+            yValuesChart1.add(new Entry(timelineDataLength - 1, Integer.parseInt(aListItem.getConfirmedCases())));
+        }
 
         // yValues Chart2 - Total Deaths
-        for(int index = 0; index < listItemsCountryTimeLine.size(); index+=4){
+        for(int index = 0; index < timelineDataLength; index+=dataDivider){
             aListItem = listItemsCountryTimeLine.get(index);
             yValuesChart2.add(new Entry(index, Integer.parseInt(aListItem.getDeaths())));
         }
+        // Add the last item if not already added
+        if ((timelineDataLength-1) % dataDivider != 0){
+            aListItem = listItemsCountryTimeLine.get(timelineDataLength - 1);
+            yValuesChart2.add(new Entry(timelineDataLength - 1, Integer.parseInt(aListItem.getDeaths())));
+        }
 
         // Get x-axis indices (dates) for both the charts
-        for(int index = 0; index < listItemsCountryTimeLine.size(); index++){
+        for(int index = 0; index < timelineDataLength; index++){
             aListItem = listItemsCountryTimeLine.get(index);
             String date = aListItem.getDate();
             try {
@@ -384,6 +396,9 @@ public class CountryActivity extends AppCompatActivity {
         lineChart1.setDescription(desc1);
 
         XAxis xAxis1 = lineChart1.getXAxis();
+        xAxis1.setLabelCount(7, true);
+        xAxis1.mAxisMaximum = 100;
+        xAxis1.mAxisMinimum = 0;
         xAxis1.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
@@ -418,6 +433,9 @@ public class CountryActivity extends AppCompatActivity {
         lineChart2.setDescription(desc2);
 
         XAxis xAxis2 = lineChart2.getXAxis();
+        xAxis2.setLabelCount(7, true);
+        xAxis2.mAxisMaximum = 100;
+        xAxis2.mAxisMinimum = 0;
         xAxis2.setValueFormatter(new ValueFormatter() {
             @Override
             public String getFormattedValue(float value) {
