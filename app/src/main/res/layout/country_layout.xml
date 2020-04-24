@@ -127,97 +127,109 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:orientation="horizontal">
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal"
+            android:weightSum="100">
 
             <TextView
-                android:layout_width="75dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/country_timeline_date"
                 android:textStyle="bold|italic"
-                android:autoSizeMaxTextSize="10sp"
-                android:autoSizeMinTextSize="7sp"
+                android:layout_weight="13.5"
+                android:autoSizeMaxTextSize="9sp"
+                android:autoSizeMinTextSize="5sp"
                 android:autoSizeTextType="uniform"
                 android:maxLines="1"
                 android:padding="5dp"/>
 
             <View
-                android:layout_width="1dp"
+                android:layout_width="0dp"
                 android:layout_height="29dp"
+                android:layout_weight="0.5"
                 android:background="@color/cardview_dark_background" />
 
             <TextView
-                android:layout_width="55dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textStyle="bold|italic"
                 android:text="@string/country_timeline_confirmed"
-                android:autoSizeMaxTextSize="10sp"
-                android:autoSizeMinTextSize="7sp"
+                android:layout_weight="18"
+                android:autoSizeMaxTextSize="9sp"
+                android:autoSizeMinTextSize="5sp"
                 android:autoSizeTextType="uniform"
                 android:maxLines="1"
                 android:padding="5dp"/>
 
             <View
-                android:layout_width="1dp"
+                android:layout_width="0dp"
                 android:layout_height="29dp"
+                android:layout_weight="0.5"
                 android:background="@color/cardview_dark_background" />
 
             <TextView
-                android:layout_width="50dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textStyle="bold|italic"
                 android:text="@string/country_timeline_deaths"
-                android:autoSizeMaxTextSize="10sp"
-                android:autoSizeMinTextSize="7sp"
+                android:layout_weight="18"
+                android:autoSizeMaxTextSize="9sp"
+                android:autoSizeMinTextSize="5sp"
                 android:autoSizeTextType="uniform"
                 android:maxLines="1"
                 android:padding="5dp"/>
 
             <View
-                android:layout_width="1dp"
+                android:layout_width="0dp"
                 android:layout_height="29dp"
+                android:layout_weight="0.5"
                 android:background="@color/cardview_dark_background" />
 
             <TextView
-                android:layout_width="55dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/country_timeline_recovered"
                 android:textStyle="bold|italic"
-                android:autoSizeMaxTextSize="10sp"
-                android:autoSizeMinTextSize="7sp"
+                android:layout_weight="18"
+                android:autoSizeMaxTextSize="9sp"
+                android:autoSizeMinTextSize="5sp"
                 android:autoSizeTextType="uniform"
                 android:maxLines="1"
                 android:padding="5dp"/>
 
             <View
-                android:layout_width="1dp"
+                android:layout_width="0dp"
                 android:layout_height="29dp"
+                android:layout_weight="0.5"
                 android:background="@color/cardview_dark_background" />
 
             <TextView
-                android:layout_width="55dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/country_timeline_new_cases"
+                android:layout_weight="16"
                 android:textStyle="bold|italic"
-                android:autoSizeMaxTextSize="10sp"
-                android:autoSizeMinTextSize="7sp"
+                android:autoSizeMaxTextSize="9sp"
+                android:autoSizeMinTextSize="5sp"
                 android:autoSizeTextType="uniform"
                 android:maxLines="1"
                 android:padding="5dp"/>
 
             <View
-                android:layout_width="1dp"
+                android:layout_width="0dp"
                 android:layout_height="29dp"
+                android:layout_weight="0.5"
                 android:background="@color/cardview_dark_background" />
 
             <TextView
-                android:layout_width="60dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/country_timeline_new_deaths"
                 android:textStyle="bold|italic"
-                android:autoSizeMaxTextSize="10sp"
-                android:autoSizeMinTextSize="7sp"
+                android:layout_weight="16"
+                android:autoSizeMaxTextSize="9sp"
+                android:autoSizeMinTextSize="5sp"
                 android:autoSizeTextType="uniform"
                 android:maxLines="1"
                 android:padding="5dp"/>
@@ -233,9 +245,6 @@
         android:id="@+id/recycler_view_2"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:paddingLeft="8dp"
-        android:paddingBottom="8dp"
-        android:paddingRight="8dp"
         android:scrollbars="vertical" />
 
     </LinearLayout>

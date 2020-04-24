@@ -54,6 +54,24 @@
             android:textColor="#018786" />
 
         <TextView
+            android:id="@+id/new_cases_item_left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:paddingLeft="8dp"
+            android:text="@string/new_cases_left"
+            android:textColor="#000" />
+
+        <TextView
+            android:id="@+id/new_deaths_item_left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:paddingLeft="8dp"
+            android:text="@string/new_deaths_left"
+            android:textColor="#F00" />
+
+        <TextView
             android:id="@+id/total_active_item_left"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -17,4 +17,8 @@
     <string name="country_timeline_recovered">Recovered</string>
     <string name="country_timeline_new_cases">New Cases</string>
     <string name="country_timeline_new_deaths">New Deaths</string>
+    <string name="new_cases_left">New Cases</string>
+    <string name="new_deaths_left">New Deaths</string>
+    <string name="new_cases_overall">New Cases</string>
+    <string name="new_deaths_overall">New Deaths</string>
 </resources>

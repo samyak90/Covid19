@@ -1,6 +1,5 @@
 package com.example.covid19;
 
-import android.graphics.drawable.Drawable;
 import android.icu.text.NumberFormat;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,7 +18,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.jwang123.flagkit.FlagKit;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,23 +34,28 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String URL_DATA_WORLD3 = "https://pomber.github.io/covid19/timeseries.json";
     private static final String URL_DATA_WORLD = "https://coronacache.home-assistant.io/corona.json";
+    private static final String URL_DATA_WORLD2 = "https://api.thevirustracker.com/free-api?countryTotals=ALL";
     private static final String URL_DATA_INDIA = "https://api.covid19india.org/data.json";
-
+    // HashMap for countryName and countryCode
+    public HashMap<String, String> hmap;
+    public HashMap<String, String> stateMap;
     RadioGroup radioGroup;
     int totalCases;
     int totalDeaths;
     int totalRecovered;
     int totalActive;
+    int totalNewCases;
+    int totalNewDeaths;
     TextView overallTotalCases;
     TextView overallTotalDeaths;
     TextView overallTotalRecovered;
     TextView overallTotalActive;
+    TextView overallNewCases;
+    TextView overallNewDeaths;
     private RecyclerView recyclerView;
     private List<ListItem> listItems;
-    // HashMap for countryName and countryCode
-    public HashMap<String, String> hmap;
-    public HashMap<String, String> stateMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,22 +79,30 @@ public class MainActivity extends AppCompatActivity {
         totalDeaths = 0;
         totalRecovered = 0;
         totalActive = 0;
+        totalNewCases = 0;
+        totalNewDeaths = 0;
 
         // Set values to textView
         overallTotalCases = findViewById(R.id.overall_cases);
         overallTotalDeaths = findViewById(R.id.overall_deaths);
         overallTotalRecovered = findViewById(R.id.overall_recovered);
         overallTotalActive = findViewById(R.id.overall_active);
+        overallNewCases = findViewById(R.id.overall_new_cases);
+        overallNewDeaths = findViewById(R.id.overall_new_deaths);
 
         // Update overall data
         String totalCasesStr = "Total Cases: " + totalCases;
         String totalDeathsStr = "Total Deaths: " + totalDeaths;
         String totalRecoveredStr = "Total Recovered: " + totalRecovered;
         String totalActiveStr = "Total Active: " + totalActive;
+        String totalNewCasesStr = "Total New Cases: " + totalNewCases;
+        String totalNewDeathsStr = "Total New Deaths: " + totalNewDeaths;
         overallTotalCases.setText(totalCasesStr);
         overallTotalDeaths.setText(totalDeathsStr);
         overallTotalRecovered.setText(totalRecoveredStr);
         overallTotalActive.setText(totalActiveStr);
+        overallNewCases.setText(totalNewCasesStr);
+        overallNewDeaths.setText(totalNewDeathsStr);
 
         // Create a HashMap for world and India
         makeCountryNameCountryCodeMap();
@@ -100,9 +111,12 @@ public class MainActivity extends AppCompatActivity {
         // Create Data List
         listItems = new ArrayList<>();
 
-        // Populate data from URL
-        loadRecyclerViewData(0);
-
+        // Populate data from URL based on radio button checked
+        int selectedId = radioGroup.getCheckedRadioButtonId();
+        if (selectedId == R.id.india)
+            loadRecyclerViewData(1);
+        else
+            loadRecyclerViewData(0);
     }
 
     private void loadRecyclerViewData(int id) {
@@ -112,40 +126,114 @@ public class MainActivity extends AppCompatActivity {
         totalDeaths = 0;
         totalRecovered = 0;
         totalActive = 0;
+        totalNewCases = 0;
+        totalNewDeaths = 0;
         listItems.clear();
 
         // Request data
-        if (id == 0) {
+//        if (id == 0) {
+//
+//            StringRequest stringRequest = new StringRequest(StringRequest.Method.GET,
+//                    URL_DATA_WORLD,
+//                    new Response.Listener<String>() {
+//                        @RequiresApi(api = Build.VERSION_CODES.N)
+//                        @Override
+//                        public void onResponse(String response) {
+//                            try {
+//                                JSONObject jsonObject = new JSONObject(response);
+//                                JSONArray array = jsonObject.getJSONArray("features");
+//
+//                                for (int i = 0; i < array.length(); i++) {
+//                                    JSONObject countryData = array.getJSONObject(i).getJSONObject("attributes");
+//                                    totalCases += Integer.parseInt(countryData.getString("Confirmed"));
+//                                    totalDeaths += Integer.parseInt(countryData.getString("Deaths"));
+//                                    totalRecovered += Integer.parseInt(countryData.getString("Recovered"));
+////                                    totalActive += Integer.parseInt(countryData.getString("Active"));
+//                                    int currActive = Integer.parseInt(countryData.getString("Confirmed")) -
+//                                            Integer.parseInt(countryData.getString("Deaths")) -
+//                                            Integer.parseInt(countryData.getString("Recovered"));
+//                                    totalActive += currActive;
+//
+//                                    ListItem item = new ListItem(
+//                                            countryData.getString("Country_Region"),
+//                                            "Total Cases: " + getUSFormatForNumber(countryData.getString("Confirmed")),
+//                                            "Total Death: " + getUSFormatForNumber(countryData.getString("Deaths")),
+//                                            "Total Recovered: " + getUSFormatForNumber(countryData.getString("Recovered")),
+//                                            "Total Active: " + getUSFormatForNumber(String.valueOf(currActive)),
+//                                            "New Cases: " + getUSFormatForNumber(String.valueOf(currActive)),
+//                                            "New Deaths: " + getUSFormatForNumber(String.valueOf(currActive))
+//                                    );
+//                                    listItems.add(item);
+//                                    //adapter.notifyDataSetChanged();
+//                                }
+//
+//                                // Sort based on the number of total cases
+//                                Collections.sort(listItems, Collections.reverseOrder(new CasesSorter()));
+//
+//                                // Update View
+//                                setAdapterAndUpdateView();
+//
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    },
+//                    new Response.ErrorListener() {
+//                        @Override
+//                        public void onErrorResponse(VolleyError error) {
+//                            error.printStackTrace();
+//                        }
+//                    });
+//
+//            RequestQueue requestQueue = Volley.newRequestQueue(this);
+//            requestQueue.add(stringRequest);
+//        } else if(id == -1){
 
+        if (id == 0) {
             StringRequest stringRequest = new StringRequest(StringRequest.Method.GET,
-                    URL_DATA_WORLD,
+                    URL_DATA_WORLD2,
                     new Response.Listener<String>() {
                         @RequiresApi(api = Build.VERSION_CODES.N)
                         @Override
                         public void onResponse(String response) {
                             try {
+                                // Get the data for relevant country
                                 JSONObject jsonObject = new JSONObject(response);
-                                JSONArray array = jsonObject.getJSONArray("features");
+                                JSONArray jsonArray = jsonObject.getJSONArray("countryitems");
+                                JSONObject allCountry = jsonArray.getJSONObject(0);
+                                for (int i = 1; i < allCountry.length() + 1; i++) {
+                                    JSONObject countryData;
+                                    try {
+                                        countryData = (JSONObject) allCountry.get(String.valueOf(i));
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        continue;
+                                    }
 
-                                for (int i = 0; i < array.length(); i++) {
-                                    JSONObject countryData = array.getJSONObject(i).getJSONObject("attributes");
-                                    totalCases += Integer.parseInt(countryData.getString("Confirmed"));
-                                    totalDeaths += Integer.parseInt(countryData.getString("Deaths"));
-                                    totalRecovered += Integer.parseInt(countryData.getString("Recovered"));
-//                                    totalActive += Integer.parseInt(countryData.getString("Active"));
-                                    int currActive = Integer.parseInt(countryData.getString("Confirmed")) -
-                                            Integer.parseInt(countryData.getString("Deaths")) -
-                                            Integer.parseInt(countryData.getString("Recovered"));
-                                    totalActive += currActive;
+                                    String countryName;
+                                    countryName = countryData.getString("title");
+                                    if (countryName.equals("USA")) {
+                                        countryName = "US";
+                                    }
 
+                                    totalCases += Integer.parseInt(countryData.getString("total_cases"));
+                                    totalDeaths += Integer.parseInt(countryData.getString("total_deaths"));
+                                    totalRecovered += Integer.parseInt(countryData.getString("total_recovered"));
+                                    totalActive += Integer.parseInt(countryData.getString("total_active_cases"));
+                                    totalNewCases += Integer.parseInt(countryData.getString("total_new_cases_today"));
+                                    totalNewDeaths += Integer.parseInt(countryData.getString("total_new_deaths_today"));
+
+                                    // Assign values to list item
                                     ListItem item = new ListItem(
-                                            countryData.getString("Country_Region"),
-                                            "Total Cases: " + getUSFormatForNumber(countryData.getString("Confirmed")),
-                                            "Total Death: " + getUSFormatForNumber(countryData.getString("Deaths")),
-                                            "Total Recovered: " + getUSFormatForNumber(countryData.getString("Recovered")),
-//                                            "Total Active: " + getUSFormatForNumber(countryData.getString("Active"))
-                                            "Total Active: " + getUSFormatForNumber(String.valueOf(currActive))
+                                            countryName,
+                                            "Total Cases: " + getUSFormatForNumber(countryData.getString("total_cases")),
+                                            "Total Death: " + getUSFormatForNumber(countryData.getString("total_deaths")),
+                                            "Total Recovered: " + getUSFormatForNumber(countryData.getString("total_recovered")),
+                                            "Total Active: " + getUSFormatForNumber(countryData.getString("total_active_cases")),
+                                            "New Cases: " + getUSFormatForNumber(countryData.getString("total_new_cases_today")),
+                                            "New Deaths: " + getUSFormatForNumber(countryData.getString("total_new_deaths_today"))
                                     );
+
                                     listItems.add(item);
                                     //adapter.notifyDataSetChanged();
                                 }
@@ -160,16 +248,16 @@ public class MainActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                         }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            error.printStackTrace();
-                        }
-                    });
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                }
+            });
 
             RequestQueue requestQueue = Volley.newRequestQueue(this);
             requestQueue.add(stringRequest);
+
         } else {
 
             StringRequest stringRequest = new StringRequest(StringRequest.Method.GET,
@@ -188,13 +276,17 @@ public class MainActivity extends AppCompatActivity {
                                     totalDeaths += Integer.parseInt(countryData.getString("deaths"));
                                     totalRecovered += Integer.parseInt(countryData.getString("recovered"));
                                     totalActive += Integer.parseInt(countryData.getString("active"));
+                                    totalNewCases += Integer.parseInt(countryData.getString("deltaconfirmed"));
+                                    totalNewDeaths += Integer.parseInt(countryData.getString("deltadeaths"));
 
                                     ListItem item = new ListItem(
                                             countryData.getString("state"),
                                             "Total Cases: " + getUSFormatForNumber(countryData.getString("confirmed")),
                                             "Total Death: " + getUSFormatForNumber(countryData.getString("deaths")),
                                             "Total Recovered: " + getUSFormatForNumber(countryData.getString("recovered")),
-                                            "Total Active: " + getUSFormatForNumber(countryData.getString("active"))
+                                            "Total Active: " + getUSFormatForNumber(countryData.getString("active")),
+                                            "New Cases: " + getUSFormatForNumber(countryData.getString("deltaconfirmed")),
+                                            "New Deaths: " + getUSFormatForNumber(countryData.getString("deltadeaths"))
                                     );
                                     listItems.add(item);
                                     //adapter.notifyDataSetChanged();
@@ -221,11 +313,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public String getUSFormatForNumber(String numberStr){
-        return NumberFormat.getNumberInstance(Locale.US).format(Integer.parseInt(numberStr));
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
     public void setAdapterAndUpdateView() {
         RecyclerView.Adapter adapter = new MyAdapter(listItems, getApplicationContext(), hmap, stateMap);
         recyclerView.setAdapter(adapter);
@@ -235,26 +322,31 @@ public class MainActivity extends AppCompatActivity {
         String totalDeathsStr = "Total Deaths: " + getUSFormatForNumber(String.valueOf(totalDeaths));
         String totalRecoveredStr = "Total Recovered: " + getUSFormatForNumber(String.valueOf(totalRecovered));
         String totalActiveStr = "Total Active: " + getUSFormatForNumber(String.valueOf(totalActive));
+        String totalNewCasesStr = "Total New Cases: " + getUSFormatForNumber(String.valueOf(totalNewCases));
+        String totalNewDeathsStr = "Total New Deaths: " + getUSFormatForNumber(String.valueOf(totalNewDeaths));
         overallTotalCases.setText(totalCasesStr);
         overallTotalDeaths.setText(totalDeathsStr);
         overallTotalRecovered.setText(totalRecoveredStr);
         overallTotalActive.setText(totalActiveStr);
+        overallNewCases.setText(totalNewCasesStr);
+        overallNewDeaths.setText(totalNewDeathsStr);
     }
 
     public void OnRadioButtonClicked(View view) {
-
+        // Get checked radio button
         int selectedId = radioGroup.getCheckedRadioButtonId();
-//        Toast.makeText(MainActivity.this,worldIndiaRadioButton.getText(), Toast.LENGTH_SHORT).show();
 
-        if (selectedId == R.id.worldYesterday) {
-
+        if (selectedId == R.id.worldYesterday)
             // Load World Data
             loadRecyclerViewData(0);
-        } else if (selectedId == R.id.india) {
+        else if (selectedId == R.id.india)
             // Load India Data
             loadRecyclerViewData(1);
-        }
+    }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public String getUSFormatForNumber(String numberStr) {
+        return NumberFormat.getNumberInstance(Locale.US).format(Integer.parseInt(numberStr));
     }
 
     // Create a HashMap for country name and code list
@@ -276,13 +368,12 @@ public class MainActivity extends AppCompatActivity {
                 String jsonCountryName = array.getJSONObject(i).getString("countryName");
                 String jsonCountryCode = array.getJSONObject(i).getString("countryCode");
                 hmap.put(jsonCountryName, jsonCountryCode);
-                }
+            }
             this.hmap = hmap;
         } catch (IOException | JSONException ex) {
             ex.printStackTrace();
         }
     }
-
 
     // Create a HashMap for country name and code list
     public void makeIndiaAndStateCodeMap() {
@@ -301,7 +392,7 @@ public class MainActivity extends AppCompatActivity {
             JSONArray stateCodeStringArray = jsonObject.names();
             assert stateCodeStringArray != null;
             for (int i = 0; i < stateCodeStringArray.length(); i++) {
-                String jsonStateCode = (String)stateCodeStringArray.getString(i);
+                String jsonStateCode = stateCodeStringArray.getString(i);
                 String jsonStateName = jsonObject.getString(jsonStateCode);
                 stateMap.put(jsonStateName, jsonStateCode.toLowerCase());
             }
