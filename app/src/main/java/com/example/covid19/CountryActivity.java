@@ -212,6 +212,7 @@ public class CountryActivity extends AppCompatActivity {
                                 // Assuming we got the country name and associated data
                                 for (int i = 0; i < countryObject.length(); i++) {
                                     try{
+                                        assert keysArray != null;
                                         String key = keysArray.getString(i);
                                         JSONObject countryDataWithDate = countryObject.getJSONObject(key);
 

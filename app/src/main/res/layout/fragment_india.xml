@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:id="@+id/scrollView1"
+    android:background="#000000"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#c0c0c0"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="100">
+
+            <ImageView
+                android:id="@+id/india_image_view_flag"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="45"
+                android:padding="8dp"
+                android:src="@mipmap/ic_launcher" />
+
+            <!--        <com.haipq.android.flagkit.FlagImageView-->
+            <!--            android:id="@+id/flagView"-->
+            <!--            android:layout_width="0dp"-->
+            <!--            android:padding="8dp"-->
+            <!--            android:layout_height="wrap_content"-->
+            <!--            android:layout_weight="45" />-->
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="55"
+                android:orientation="vertical"
+                android:paddingLeft="10dp">
+
+                <TextView
+                    android:id="@+id/india_country_state_name2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:autoSizeMaxTextSize="19sp"
+                    android:autoSizeMinTextSize="15sp"
+                    android:autoSizeTextType="uniform"
+                    android:maxLines="1"
+                    android:padding="6dp"
+                    android:text="@string/country_state_name"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="22sp"
+                    android:textStyle="italic|bold|italic" />
+
+                <TextView
+                    android:id="@+id/india_total_cases_item_left2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:paddingLeft="8dp"
+                    android:text="@string/total_cases"
+                    android:textColor="#000" />
+
+                <TextView
+                    android:id="@+id/india_total_deaths_item_left2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:paddingLeft="8dp"
+                    android:text="@string/total_deaths"
+                    android:textColor="#F00" />
+
+                <TextView
+                    android:id="@+id/india_total_recovered_item_left2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:paddingLeft="8dp"
+                    android:text="@string/total_recovered"
+                    android:textColor="#018786" />
+
+                <TextView
+                    android:id="@+id/india_total_active_item_left2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:paddingLeft="8dp"
+                    android:text="@string/total_active" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/india_lineChart1"
+            android:layout_width="match_parent"
+            android:layout_height="217dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp" />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/india_lineChart2"
+            android:layout_width="match_parent"
+            android:layout_height="217dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/cardview_dark_background" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal"
+            android:weightSum="100">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/country_timeline_date"
+                android:textStyle="bold|italic"
+                android:layout_weight="13.5"
+                android:autoSizeMaxTextSize="9sp"
+                android:autoSizeMinTextSize="5sp"
+                android:autoSizeTextType="uniform"
+                android:maxLines="1"
+                android:padding="5dp"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="29dp"
+                android:layout_weight="0.5"
+                android:background="@color/cardview_dark_background" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textStyle="bold|italic"
+                android:text="@string/country_timeline_confirmed"
+                android:layout_weight="18"
+                android:autoSizeMaxTextSize="9sp"
+                android:autoSizeMinTextSize="5sp"
+                android:autoSizeTextType="uniform"
+                android:maxLines="1"
+                android:padding="5dp"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="29dp"
+                android:layout_weight="0.5"
+                android:background="@color/cardview_dark_background" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textStyle="bold|italic"
+                android:text="@string/country_timeline_deaths"
+                android:layout_weight="18"
+                android:autoSizeMaxTextSize="9sp"
+                android:autoSizeMinTextSize="5sp"
+                android:autoSizeTextType="uniform"
+                android:maxLines="1"
+                android:padding="5dp"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="29dp"
+                android:layout_weight="0.5"
+                android:background="@color/cardview_dark_background" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/country_timeline_recovered"
+                android:textStyle="bold|italic"
+                android:layout_weight="18"
+                android:autoSizeMaxTextSize="9sp"
+                android:autoSizeMinTextSize="5sp"
+                android:autoSizeTextType="uniform"
+                android:maxLines="1"
+                android:padding="5dp"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="29dp"
+                android:layout_weight="0.5"
+                android:background="@color/cardview_dark_background" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/country_timeline_new_cases"
+                android:layout_weight="16"
+                android:textStyle="bold|italic"
+                android:autoSizeMaxTextSize="9sp"
+                android:autoSizeMinTextSize="5sp"
+                android:autoSizeTextType="uniform"
+                android:maxLines="1"
+                android:padding="5dp"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="29dp"
+                android:layout_weight="0.5"
+                android:background="@color/cardview_dark_background" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/country_timeline_new_deaths"
+                android:textStyle="bold|italic"
+                android:layout_weight="16"
+                android:autoSizeMaxTextSize="9sp"
+                android:autoSizeMinTextSize="5sp"
+                android:autoSizeTextType="uniform"
+                android:maxLines="1"
+                android:padding="5dp"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/cardview_dark_background" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/india_recycler_view_2"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:scrollbars="vertical" />
+
+    </LinearLayout>
+
+</ScrollView>
