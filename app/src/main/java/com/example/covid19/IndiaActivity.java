@@ -1,6 +1,7 @@
 package com.example.covid19;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
@@ -15,6 +16,7 @@ import com.blongho.country_data.World;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class IndiaActivity extends AppCompatActivity {
 
@@ -71,16 +73,23 @@ public class IndiaActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.viewPager);
         tabLayout = findViewById(R.id.tabLayout);
 
+        // Add a back button in Action Bar to go back to the previous activity
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
         myPagerAdapter = new MyPagerAdapter(getSupportFragmentManager(), 0);
         myPagerAdapter.addFragment(IndiaFragment.newInstance(stateName, totalCases, totalDeath, totalRecovered, totalActive, stateMap), "TIMELINE");
         myPagerAdapter.addFragment(DistrictFragment.newInstance(stateName, totalCases, totalDeath, totalRecovered, totalActive, totalNewCases, totalNewDeaths), "DISTRICT DATA");
 
         viewPager.setPageTransformer(true, new DepthPageTransformer());
-
         viewPager.setAdapter(myPagerAdapter);
-
         tabLayout.setupWithViewPager(viewPager);
 
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 
 }

@@ -40,6 +40,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class CountryActivity extends AppCompatActivity {
 
@@ -61,6 +62,9 @@ public class CountryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.country_layout);
         Log.d(TAG, "onCreate: started.");
+
+        // Add a back button in Action Bar to go back to the previous activity
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         // Another library that needs initialization
         World.init(getApplicationContext()); // Initializes the library that loads all data
@@ -503,6 +507,12 @@ public class CountryActivity extends AppCompatActivity {
             return stateCode;
         }
         return "";
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 
 }
