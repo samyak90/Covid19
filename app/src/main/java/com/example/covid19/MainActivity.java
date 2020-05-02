@@ -1,17 +1,24 @@
 package com.example.covid19;
 
+import android.content.Intent;
 import android.icu.text.NumberFormat;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -54,8 +61,10 @@ public class MainActivity extends AppCompatActivity {
     TextView overallTotalActive;
     TextView overallNewCases;
     TextView overallNewDeaths;
+    SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView recyclerView;
     private List<ListItem> listItems;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,6 +126,19 @@ public class MainActivity extends AppCompatActivity {
             loadRecyclerViewData(1);
         else
             loadRecyclerViewData(0);
+
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                int selectedId = radioGroup.getCheckedRadioButtonId();
+                if (selectedId == R.id.india)
+                    loadRecyclerViewData(1);
+                else
+                    loadRecyclerViewData(0);
+            }
+        });
+
     }
 
     private void loadRecyclerViewData(int id) {
@@ -172,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
 //
 //                                // Update View
 //                                setAdapterAndUpdateView();
+////                                swipeRefreshLayout.setRefreshing(false);
 //
 //                            } catch (JSONException e) {
 //                                e.printStackTrace();
@@ -187,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
 //
 //            RequestQueue requestQueue = Volley.newRequestQueue(this);
 //            requestQueue.add(stringRequest);
-//        } else if(id == -1){
+//        } else {
 
         if (id == 0) {
             StringRequest stringRequest = new StringRequest(StringRequest.Method.GET,
@@ -243,6 +266,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 // Update View
                                 setAdapterAndUpdateView();
+                                swipeRefreshLayout.setRefreshing(false);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -294,6 +318,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 // Update Data
                                 setAdapterAndUpdateView();
+//                                swipeRefreshLayout.setRefreshing(false);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -317,6 +342,9 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView.Adapter adapter = new MyAdapter(listItems, getApplicationContext(), hmap, stateMap);
         recyclerView.setAdapter(adapter);
 
+        if (swipeRefreshLayout.isRefreshing())
+            swipeRefreshLayout.setRefreshing(false);
+
         // Update overall data
         String totalCasesStr = "Total Cases: " + getUSFormatForNumber(String.valueOf(totalCases));
         String totalDeathsStr = "Total Deaths: " + getUSFormatForNumber(String.valueOf(totalDeaths));
@@ -336,12 +364,14 @@ public class MainActivity extends AppCompatActivity {
         // Get checked radio button
         int selectedId = radioGroup.getCheckedRadioButtonId();
 
-        if (selectedId == R.id.worldYesterday)
+        if (selectedId == R.id.worldYesterday) {
             // Load World Data
             loadRecyclerViewData(0);
-        else if (selectedId == R.id.india)
+        }
+        else if (selectedId == R.id.india) {
             // Load India Data
             loadRecyclerViewData(1);
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -400,6 +430,25 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException | JSONException ex) {
             ex.printStackTrace();
         }
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.my_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        if (item.getItemId() == R.id.about_menu) {
+            Intent intent = new Intent(this, About.class);
+            this.startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

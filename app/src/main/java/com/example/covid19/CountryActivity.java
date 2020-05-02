@@ -5,10 +5,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -185,8 +188,8 @@ public class CountryActivity extends AppCompatActivity {
 
         if(TextUtils.isEmpty(stateCode)) {
             stringRequest = new StringRequest(StringRequest.Method.GET,
-//                    URL_DATA_WORLD_TIME_SERIES,
-                    URL_DATA_WORLD_TIME_SERIES2_BASE + countryCode,
+                    URL_DATA_WORLD_TIME_SERIES,
+//                    URL_DATA_WORLD_TIME_SERIES2_BASE + countryCode,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -196,63 +199,62 @@ public class CountryActivity extends AppCompatActivity {
 
 
 
-//                                JSONArray array = jsonObject.getJSONArray(countryName);
-//                                // Assuming we got the country name and associated data
-//                                for (int i = 0; i < array.length(); i++) {
-//                                    JSONObject countryDataWithDate = array.getJSONObject(i);
-//                                    String currDate = countryDataWithDate.getString("date");
-//                                    String currConfirmed = countryDataWithDate.getString("confirmed");
-//                                    String currDeaths = countryDataWithDate.getString("deaths");
-//                                    String currRecovered = countryDataWithDate.getString("recovered");
-//                                    // Assign values to list item
-//                                    CountryTimelineListItem item = new CountryTimelineListItem(currDate, currConfirmed, currDeaths, currRecovered);
-//                                    listItemsCountryTimeLine.add(item);
-//                                }
-
-
-
-                                JSONObject countryObject = jsonObject.getJSONArray("timelineitems").getJSONObject(0);
-                                JSONArray keysArray = countryObject.names();
+                                JSONArray array = jsonObject.getJSONArray(countryName);
                                 // Assuming we got the country name and associated data
-                                for (int i = 0; i < countryObject.length(); i++) {
-                                    try{
-                                        assert keysArray != null;
-                                        String key = keysArray.getString(i);
-                                        JSONObject countryDataWithDate = countryObject.getJSONObject(key);
-
-                                        // Format Date
-                                        String currDate = key;
-                                        // Format date data correctly
-                                        try {
-                                            Date date1 = new SimpleDateFormat("MM/dd/yy", Locale.US).parse(currDate);
-                                            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-                                            assert date1 != null;
-                                            currDate = dateFormat.format(date1);
-                                        } catch (ParseException e) {
-                                            currDate = key;
-                                            e.printStackTrace();
-                                        }
-
-                                        String currConfirmed = countryDataWithDate.getString("total_cases");
-                                        String currDeaths = countryDataWithDate.getString("total_deaths");
-                                        String currRecovered = countryDataWithDate.getString("total_recoveries");
-
-                                        // Fix the bug related to total recoveries data 0 for certain dates for certain countries
-                                        if(i > 0){
-                                            CountryTimelineListItem prevItem = listItemsCountryTimeLine.get(i-1);
-                                            if(Integer.parseInt(currRecovered) < Integer.parseInt(prevItem.getRecovered()))
-                                                currRecovered = String.valueOf(Integer.parseInt(prevItem.getRecovered()) + Integer.parseInt(currRecovered));
-                                        }
-
-                                        // Assign values to list item
-                                        CountryTimelineListItem item = new CountryTimelineListItem(currDate, currConfirmed, currDeaths, currRecovered);
-                                        listItemsCountryTimeLine.add(item);
-
-                                    } catch (JSONException exc){
-                                        exc.printStackTrace();
-                                    }
+                                for (int i = 0; i < array.length(); i++) {
+                                    JSONObject countryDataWithDate = array.getJSONObject(i);
+                                    String currDate = countryDataWithDate.getString("date");
+                                    String currConfirmed = countryDataWithDate.getString("confirmed");
+                                    String currDeaths = countryDataWithDate.getString("deaths");
+                                    String currRecovered = countryDataWithDate.getString("recovered");
+                                    // Assign values to list item
+                                    CountryTimelineListItem item = new CountryTimelineListItem(currDate, currConfirmed, currDeaths, currRecovered);
+                                    listItemsCountryTimeLine.add(item);
                                 }
 
+
+
+//                                JSONObject countryObject = jsonObject.getJSONArray("timelineitems").getJSONObject(0);
+//                                JSONArray keysArray = countryObject.names();
+//                                // Assuming we got the country name and associated data
+//                                for (int i = 0; i < countryObject.length(); i++) {
+//                                    try{
+//                                        assert keysArray != null;
+//                                        String key = keysArray.getString(i);
+//                                        JSONObject countryDataWithDate = countryObject.getJSONObject(key);
+//
+//                                        // Format Date
+//                                        String currDate = key;
+//                                        // Format date data correctly
+//                                        try {
+//                                            Date date1 = new SimpleDateFormat("MM/dd/yy", Locale.US).parse(currDate);
+//                                            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+//                                            assert date1 != null;
+//                                            currDate = dateFormat.format(date1);
+//                                        } catch (ParseException e) {
+//                                            currDate = key;
+//                                            e.printStackTrace();
+//                                        }
+//
+//                                        String currConfirmed = countryDataWithDate.getString("total_cases");
+//                                        String currDeaths = countryDataWithDate.getString("total_deaths");
+//                                        String currRecovered = countryDataWithDate.getString("total_recoveries");
+//
+//                                        // Fix the bug related to total recoveries data 0 for certain dates for certain countries
+//                                        if(i > 0){
+//                                            CountryTimelineListItem prevItem = listItemsCountryTimeLine.get(i-1);
+//                                            if(Integer.parseInt(currRecovered) < Integer.parseInt(prevItem.getRecovered()))
+//                                                currRecovered = String.valueOf(Integer.parseInt(prevItem.getRecovered()) + Integer.parseInt(currRecovered));
+//                                        }
+//
+//                                        // Assign values to list item
+//                                        CountryTimelineListItem item = new CountryTimelineListItem(currDate, currConfirmed, currDeaths, currRecovered);
+//                                        listItemsCountryTimeLine.add(item);
+//
+//                                    } catch (JSONException exc){
+//                                        exc.printStackTrace();
+//                                    }
+//                                }
 
 
                                 // Update View for recycler view and line charts
@@ -513,6 +515,24 @@ public class CountryActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         finish();
         return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.my_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        if (item.getItemId() == R.id.about_menu) {
+            Intent intent = new Intent(this, About.class);
+            this.startActivity(intent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }
